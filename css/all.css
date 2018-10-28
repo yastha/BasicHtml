@@ -1,0 +1,24 @@
+body{
+    background-color:#FFFACD;
+}
+
+#wrapper{
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+.navbar-brand{
+background-color:
+}
+
+.carousel-item{
+    height:500px;
+    width:80%;
+    position: relative;
+    margin-left:120px;
+
+}
+.color-red{
+    height: 300px;
+    background-color:#C0C0C0;
+}
