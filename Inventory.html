@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+</head>
+
+<body>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add New Book
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        edit New Book
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add or Edit The Bookname</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="javascript:void(0);" method="Post" onsubmit="app.Add()">
+                        <div id="astha">
+
+                            <!-- <div><input class="form-group" type="serialnumber" id="add-serialnumber"></div> -->
+                            <!-- <div><label for="add-date">Date</label></div> -->
+                            <!-- <input class="form-group" type="date" id="add-date" placeholder="New date"> -->
+                            <div><label for="add-bookname">Add bookname</label></div>
+                            <input type="text" class="form-group" id="add-bookname" placeholder="New bookname">
+                            <div><label for="add-authorname">Add authorname</label></div>
+                            <input type="text" class="form-group" id="add-authorname" placeholder="Authorname">
+                            <div class="radio-class">
+                                <label><input type="radio" class="form-group" id="r-available" name="book-status" value="available">Available</label>
+                                <label><input type="radio" class="form-group" id="r-booked" name="book-status" value="booked">Booked</label>
+                            </div>
+                            
+                           
+                            
+                    </form>
+                    <div id="spoiler" role="aria-hidden">
+                    <input type="submit" value="Add">
+                    <form action="javascript:void(0);" method="POST" onsubmit="app.Edit()" id="saveEdit" >
+                    <input type="submit" value="Edit" />
+                    </form>
+                    </div>
+
+                        
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Add</button> -->
+                    <!-- <button type="button" class="btn btn-primary">Edit changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- style="display: none" -->
+
+    <p id="counter"></p>
+    <table class="table table-bordered">
+        <tr>
+            <th>S.N</th>
+            <th>Name of the Book</th>
+            <th>Name of the author</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <tbody id="bookList">
+        </tbody>
+
+    </table>
+    <script>
+        var app = new function () {
+            this.el = document.getElementById('bookList');
+            this.number = ['1', '2', '3'];
+            this.nameOfBook = ["Alchemist", "Chemistry", "Physics"];
+            this.nameOfAuthor = ["Astha", "Sudrisya", "Sumina"];
+            this.status = ["Available", "Booked", "Available"];
+            console.log(this.nameOfBook);
+            this.count = function (data) {
+                if (data) {
+                    if (data > 1) {
+                        name = "bookList";
+                    }
+                    this.el.innerHTML = data + ' ' + name;
+                } else {
+                    this.el.innerHTML = 'No ' + name;
+                }
+            };
+            this.FetchAll = function () {
+                var data = '';
+                if (this.nameOfBook.length > 0) {
+                    for (i = 0; i < this.nameOfBook.length; i++) {
+                        data += '<tr>';
+                        data += '<td>' + this.number[i] + '</td>';
+                        data += '<td>' + this.nameOfBook[i] + '</td>';
+                        data += '<td>' + this.nameOfAuthor[i] + '</td>';
+                        data += '<td>' + this.status[i] + '</td>';
+                        data += '<td><button onclick="app.Edit(' + i + ')" id=' + i +
+                            '>Edit</button> <button onclick="app.Delete(' + i + ')">Delete</button></td>';
+                        data += '</tr>';
+                    }
+                }
+                this.count(this.nameOfAuthor.length);
+                return this.el.innerHTML = data;
+            };
+
+            this.Add = function () {
+                elSerial = this.nameOfBook.length + 1;
+                elBook = document.getElementById("add-bookname");
+                elAuthor = document.getElementById("add-authorname");
+                if (document.getElementById("r-available").checked) {
+                    elCheckbox = "Available";
+                } else {
+                    elCheckbox = "Booked";
+                };
+
+                // el = document.querySelectorAll("#add-serialnumber","#add-bookname","#add-authorname","#check-box-holder");
+                //   console.log(el);
+                //   elBook.forEach(function(value){
+                //    console.log(value.value, "data");
+                console.log(elCheckbox);
+                if (elBook.value && elAuthor.value) {
+                    this.number.push(elSerial);
+                    this.nameOfBook.push(elBook.value.trim());
+                    this.nameOfAuthor.push(elAuthor.value.trim());
+                    this.status.push(elCheckbox);
+                    //    value.value='';
+                    this.FetchAll();
+                }
+                //    });
+
+
+            };
+            this.Edit = function (item) {
+                $('#exampleModal').modal('show');;
+                var elBooknameEdit = document.getElementById('add-bookname');
+                var elAuthorEdit = document.getElementById('add-authorname');
+                var elCheckboxEdit = document.getElementsByName("book-status");
+                // if (elCheckboxEdit.value === 'available')
+                //     elCheckboxEdit
+                console.log(elCheckboxEdit);
+                console.log(this.status[item]);
+               // document.getElementById('spoiler').style.display = 'block';
+                elBooknameEdit.value = this.nameOfBook[item];
+                elAuthorEdit.value = this.nameOfAuthor[item];
+                elCheckboxEdit.value = this.status[item];
+
+                // document.getElementById('spoiler').style.display = 'block';
+                self = this;
+
+                document.getElementById('saveEdit').onsubmit = function () {
+                    var listing1 = elBooknameEdit.value;
+                    var listing2 = elAuthorEdit.value;
+                    var listing3 = elCheckboxEdit.value;
+                    console.log(listing3)
+                   self.nameOfBook.splice(item, 1, listing1.trim());
+                   self.nameOfAuthor.splice(item, 1, listing2.trim());
+                   console.log(self.status.splice(item, 1, listing3.trim()));
+                    self.listing1;
+                    self.listing2;
+                    self.listing3;
+                    self.FetchAll();
+                    console.log(listing1);
+                   
+                   // CloseInput();  
+            }
+        };
+
+        this.Delete = function (item) {
+            // Delete the current row
+            this.nameOfBook.splice(item, 1);
+            // Display the new list
+            this.FetchAll();
+        };
+
+
+
+        }
+        app.FetchAll();
+
+        function CloseInput() {
+            document.getElementById('spoiler').style.display = 'none';
+
+        }
+    </script>~
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
